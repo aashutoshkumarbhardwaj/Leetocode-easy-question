@@ -1,0 +1,28 @@
+leetcode -Count Odd Numbers in an Interval Range
+
+class Solution {
+    public int countOdds(int low, int high) {
+        // int count =0;
+        // for( int i=low ; i<=high ; i++){
+        //     if(i%2!=0){
+        //         count ++;
+        //     }
+        //     else{
+        //         continue;
+        //     }
+          
+        // }
+        //   return count  ;
+         
+         // 82 out of 84 cases paseed  !! yahhooo
+      
+int  baki=high-low;
+         if ( high %2==0 && low%2==0){
+            return baki/2;
+         }
+         else{
+            return baki/2+1;
+         }
+       
+    }
+}
