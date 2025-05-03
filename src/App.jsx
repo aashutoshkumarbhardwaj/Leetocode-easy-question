@@ -1,28 +1,54 @@
 import React, { Fragment } from 'react';
 import { useState } from 'react';
-
+let counter = 0;
 function App() {
-    const [title, setTitle] = useState("My name is aashutosh");
-    function updateTitle() {
-        setTitle("my name is  " + Math.random());
-    }
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      title: Math.random(),
+      completed: Math.random(),
+    },
+    {
+      id: 2,
+      title: Math.random(),
+      completed: Math.random()
+    },
+    {
+      id: 4,
+      title: Math.random(),
+      completed: Math.random(),
+    },
+  ]);
+
+  function addTodo() {
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      {
+        id: counter++, // Ensure unique ID
+        title: Math.random(),
+        description: Math.random()
+      },
+    ]);
+  }
+
   return (
     <div>
-     <button onClick={updateTitle}>Update Title</button>
-      <Header title={title}></Header>
-      
-      <Header title="aashutosh2"></Header>
-      <Header title="aashutosh3"></Header>
-     
+      <button onClick={addTodo}>Add Todo</button>
+      {todos.map((todo) => (
+        <Todo key={todo.id} title={todo.title} description={todo.description} />
+      ))}
     </div>
   );
 }
 
-const Header = React.memo(function Header({ title }) {
-  console.log("Header component rendered by aashutosh");
-  return <div>{title}</div>;
-});
-
+function Todo({ title, description }) {
+  return (
+    <div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+}
 
 export default App;
 
