@@ -1,54 +1,45 @@
-import React, { Fragment } from 'react';
-import { useState } from 'react';
-let counter = 0;
-function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: Math.random(),
-      completed: Math.random(),
-    },
-    {
-      id: 2,
-      title: Math.random(),
-      completed: Math.random()
-    },
-    {
-      id: 4,
-      title: Math.random(),
-      completed: Math.random(),
-    },
-  ]);
+import React, { useState, useEffect } from "react";
+import './App.css';
 
-  function addTodo() {
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      {
-        id: counter++, // Ensure unique ID
-        title: Math.random(),
-        description: Math.random()
-      },
-    ]);
-  }
+function App () {
+    const [counter, setCounter] = useState(0);
+    const [todos, setTodos] = useState([]);
 
-  return (
-    <div>
-      <button onClick={addTodo}>Add Todo</button>
-      {todos.map((todo) => (
-        <Todo key={todo.id} title={todo.title} description={todo.description} />
-      ))}
-    </div>
-  );
+    useEffect(() => {
+      setInterval(() => {
+        fetch("https://jsonplaceholder.typicode.com/todos")
+            .then(async function(res) {
+                const json = await res.json();
+                // json is an array directly, not json.todos
+                const todosWithDescription = json.map(todo => ({
+                    ...todo,
+                    description: "This is a sample description"
+                }));
+                setTodos(todosWithDescription);
+            })
+            .catch((err) => {
+                console.error("Error fetching todos:", err);
+            });
+
+          }, 5000); // Fetch every 5 seconds
+    }, []);
+
+    return (
+        <div>
+            {todos.map(todo => (
+                <Todo key={todo.id} title={todo.title} description={todo.description} />
+            ))}
+        </div>
+    );
 }
 
 function Todo({ title, description }) {
-  return (
-    <div>
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
-  );
+    return (
+        <div className="todo">
+            <h2>{title}</h2>
+            <p>{description}</p>
+        </div>
+    );
 }
 
 export default App;
-
